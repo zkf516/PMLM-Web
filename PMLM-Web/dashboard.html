@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>患者信息</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--primary);
+            padding: 1rem;
+            border-right: 1px solid var(--secondary);
+        }
+
+        .patient-info {
+            background: rgba(74, 101, 114, 0.15);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="patient-info">
+                <h2>陈书航</h2>
+                <p>住院号：20240315</p>
+                <p>性别：男</p>
+                <p>年龄：1</p>
+            </div>
+            <nav>
+                <div class="info-card">基本信息</div>
+                <div class="info-card">病历数据</div>
+                <div class="info-card">医疗建议</div>
+            </nav>
+        </div>
+        <div class="main-content">
+            <div class="info-card">
+                <h3>生命体征</h3>
+                <div class="vital-signs"></div>
+            </div>
+            <div class="info-card">
+                <h3>过敏信息</h3>
+                <p style="color: var(--accent); border-left: 3px solid var(--accent); padding-left: 1rem;">
+                    牛子青霉素过敏
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

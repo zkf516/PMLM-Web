@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病历数据</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .records-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .date-filter {
+            background: rgba(74, 101, 114, 0.3);
+            padding: 8px 15px;
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            color: var(--text);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(26, 35, 51, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--secondary);
+        }
+
+        .data-table th {
+            background: rgba(74, 101, 114, 0.3);
+            font-weight: 600;
+        }
+
+        .abnormal {
+            color: var(--accent);
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .abnormal::before {
+            content: "⚠";
+            margin-right: 8px;
+        }
+
+        .export-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .export-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="records-container">
+        <div class="data-header">
+            <h1>血常规历史数据</h1>
+            <div class="filter-group">
+                <input type="date" class="date-filter">
+                <button class="export-btn">
+                    <i class="fas fa-file-export"></i> 导出PDF
+                </button>
+            </div>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>白细胞 (10^9/L)</th>
+                    <th>红细胞 (10^12/L)</th>
+                    <th>血红蛋白 (g/L)</th>
+                    <th>血小板 (10^9/L)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2023-09-01</td>
+                    <td class="abnormal">12.5↑</td>
+                    <td>4.2</td>
+                    <td class="abnormal">135↓</td>
+                    <td>210</td>
+                </tr>
+                <tr>
+                    <td>2023-08-25</td>
+                    <td>8.2</td>
+                    <td>4.5</td>
+                    <td>145</td>
+                    <td>195</td>
+                </tr>
+                <tr>
+                    <td>2023-08-18</td>
+                    <td class="abnormal">15.1↑</td>
+                    <td>3.9</td>
+                    <td>142</td>
+                    <td class="abnormal">80↓</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医疗建议</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .chat-wrapper {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .chat-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--secondary);
+            padding-bottom: 1rem;
+        }
+
+        .chat-history {
+            height: 60vh;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(26, 35, 51, 0.9);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .message {
+            margin: 1.5rem 0;
+            padding: 1.2rem;
+            border-radius: 15px;
+            max-width: 75%;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #4A6572, #2F4353);
+            margin-left: auto;
+            border: 1px solid rgba(74, 101, 114, 0.5);
+        }
+
+        .ai-message {
+            background: rgba(26, 35, 51, 0.8);
+            border: 1px solid var(--secondary);
+            position: relative;
+        }
+
+        .ai-message::before {
+            content: "🩺";
+            position: absolute;
+            left: -35px;
+            top: 10px;
+            font-size: 1.2rem;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+            background: rgba(26, 35, 51, 0.9);
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            padding: 12px;
+            background: rgba(74, 101, 114, 0.3);
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            color: var(--text);
+            resize: none;
+            height: 45px;
+            max-height: 120px;
+        }
+
+        .send-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 0 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .send-btn:hover {
+            opacity: 0.9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-wrapper">
+        <div class="chat-header">
+            <h1>AI医疗助手</h1>
+            <p>基于患者病历数据的智能分析建议</p>
+        </div>
+
+        <div class="chat-history">
+            <div class="message ai-message">
+                <strong>系统提示：</strong> 您好！我是医疗AI助手，可以为您解答以下问题：<br>
+                • 检查报告解读<br>
+                • 用药建议咨询<br>
+                • 症状原因分析<br>
+                • 康复指导建议
+            </div>
+
+            <div class="message user-message">
+                最近三天血压波动较大（120/80 → 140/95），可能是什么原因？
+            </div>
+
+            <div class="message ai-message">
+                <strong>分析建议：</strong><br>
+                根据您的最新检查数据，可能的影响因素包括：<br>
+                1. 降压药服用时间不规律<br>
+                2. 近期钠盐摄入量增加<br>
+                3. 睡眠质量下降（近期平均睡眠6小时）<br>
+                建议：<br>
+                • 保持每日固定时间测量血压<br>
+                • 联系主治医师调整用药方案<br>
+                • 填写《血压监测记录表》
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <textarea placeholder="输入您的医疗问题（支持换行输入）"></textarea>
+            <button class="send-btn">发送</button>
+        </div>
+    </div>
+</body>
+
+</html>
