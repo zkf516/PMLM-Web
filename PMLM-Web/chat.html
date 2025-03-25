@@ -112,7 +112,7 @@
             <p>基于患者病历数据的智能分析建议</p>
         </div>
 
-        <div class="chat-history">
+        <div class="chat-history" id="chatHistory">
             <div class="message ai-message">
                 <strong>系统提示：</strong> 您好！我是医疗AI助手，可以为您解答以下问题：<br>
                 • 检查报告解读<br>
@@ -120,29 +120,50 @@
                 • 症状原因分析<br>
                 • 康复指导建议
             </div>
-
-            <div class="message user-message">
-                最近三天血压波动较大（120/80 → 140/95），可能是什么原因？
-            </div>
-
-            <div class="message ai-message">
-                <strong>分析建议：</strong><br>
-                根据您的最新检查数据，可能的影响因素包括：<br>
-                1. 降压药服用时间不规律<br>
-                2. 近期钠盐摄入量增加<br>
-                3. 睡眠质量下降（近期平均睡眠6小时）<br>
-                建议：<br>
-                • 保持每日固定时间测量血压<br>
-                • 联系主治医师调整用药方案<br>
-                • 填写《血压监测记录表》
-            </div>
         </div>
 
         <div class="chat-input">
-            <textarea placeholder="输入您的医疗问题（支持换行输入）"></textarea>
-            <button class="send-btn">发送</button>
+            <textarea id="userInput" placeholder="输入您的医疗问题（支持换行输入）"></textarea>
+            <button class="send-btn" onclick="sendMessage()">发送</button>
         </div>
     </div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("userInput");
+            const chatHistory = document.getElementById("chatHistory");
+            const messageText = userInput.value.trim();
+            if (messageText === "") return;
+
+            // 创建用户消息
+            const userMessage = document.createElement("div");
+            userMessage.classList.add("message", "user-message");
+            userMessage.textContent = messageText;
+            chatHistory.appendChild(userMessage);
+
+            // 清空输入框
+            userInput.value = "";
+
+            // 预留 AI 接口调用位置
+            setTimeout(() => {
+                const aiMessage = document.createElement("div");
+                aiMessage.classList.add("message", "ai-message");
+                aiMessage.innerHTML = `<strong>AI回复：</strong> （此处预留接口调用，可替换为实际 AI 处理结果）`;
+                chatHistory.appendChild(aiMessage);
+                
+                // 滚动到底部
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }, 1000);
+        }
+
+        // 监听回车键发送消息
+        document.getElementById("userInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 
 </html>
