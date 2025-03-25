@@ -29,20 +29,28 @@
             color: var(--text);
         }
 
+        .data-table-container {
+            width: 100%; /* 让其适应容器 */
+            overflow-x: auto; /* Enable horizontal scroll */
+            -webkit-overflow-scrolling: touch; /* Improve scroll on mobile */
+        }
+
         .data-table {
-            width: 100%;
+            min-width: calc(8 * 100px); /* 让表格总宽度至少有 8 列 */
+            width: max-content; /* 保证其内部的列可滑动 */
             border-collapse: collapse;
             background: rgba(26, 35, 51, 0.9);
             border-radius: 12px;
             overflow: hidden;
+            table-layout: fixed; /* 让列宽固定 */
         }
 
         .data-table th,
         .data-table td {
-            padding: 15px;
-            text-align: left;
+            width: 100px; /* 每列固定 150px */
+            padding: 10px;
+            text-align: center;
             border-bottom: 1px solid var(--secondary);
-            white-space: nowrap;
         }
 
         .data-table th {
@@ -75,40 +83,6 @@
             opacity: 0.9;
         }
     </style>
-    <script>
-        function formatValue(value, min, max) {
-            if (value < min) {
-                return `<span class='abnormal'>${value}↓</span>`;
-            } else if (value > max) {
-                return `<span class='abnormal'>${value}↑</span>`;
-            }
-            return value;
-        }
-
-        async function loadData() {
-            try {
-                const response = await fetch('/api/data'); // 需后端提供 /api/data 端点
-                const data = await response.json();
-                const tbody = document.querySelector(".data-table tbody");
-                tbody.innerHTML = "";
-
-                data.forEach(item => {
-                    const row = `<tr>
-                        <td>${item.日期}</td>
-                        <td>${formatValue(item["白细胞计数"], 4.0, 10.0)}</td>
-                        <td>${formatValue(item["红细胞计数"], 3.5, 5.5)}</td>
-                        <td>${formatValue(item["血红蛋白"], 120, 160)}</td>
-                        <td>${formatValue(item["血小板总数"], 150, 400)}</td>
-                    </tr>`;
-                    tbody.innerHTML += row;
-                });
-            } catch (error) {
-                console.error("数据加载失败:", error);
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", loadData);
-    </script>
 </head>
 
 <body>
@@ -122,20 +96,166 @@
                 </button>
             </div>
         </div>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>日期</th>
-                    <th>白细胞 (10^9/L)</th>
-                    <th>红细胞 (10^12/L)</th>
-                    <th>血红蛋白 (g/L)</th>
-                    <th>血小板 (10^9/L)</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>检查日期</th>
+                        <th>酸碱度</th>
+                        <th>白蛋白</th>
+                        <th>总蛋白</th>
+                        <th>间接胆红素</th>
+                        <th>直接胆红素</th>
+                        <th>总胆红素</th>
+                        <th>碱性磷酸酶</th>
+                        <th>丙氨酸氨基转移酶</th>
+                        <th>前白蛋白</th>
+                        <th>总胆汁酸</th>
+                        <th>大血小板数目</th>
+                        <th>血小板压积</th>
+                        <th>大血小板比率</th>
+                        <th>平均血小板体积</th>
+                        <th>血小板体积分布宽度</th>
+                        <th>红细胞体积分布宽度变异系数</th>
+                        <th>红细胞体积分布宽度标准差</th>
+                        <th>嗜碱性粒细胞绝对数</th>
+                        <th>嗜酸性粒细胞绝对数</th>
+                        <th>单核细胞绝对数</th>
+                        <th>淋巴细胞绝对数</th>
+                        <th>中性粒细胞绝对数</th>
+                        <th>嗜碱性粒细胞比率</th>
+                        <th>嗜酸性粒细胞比率</th>
+                        <th>单核细胞比率</th>
+                        <th>淋巴细胞比率</th>
+                        <th>中性粒细胞比率</th>
+                        <th>平均红细胞血红蛋白浓度</th>
+                        <th>平均红细胞血红蛋白含量</th>
+                        <th>血细胞比容</th>
+                        <th>白细胞计数</th>
+                        <th>血小板总数</th>
+                        <th>血红蛋白</th>
+                        <th>平均红细胞体积</th>
+                        <th>红细胞计数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2023-09-01</td>
+                        <td class="abnormal">12.5↑</td>
+                        <td>4.2</td>
+                        <td class="abnormal">135↓</td>
+                        <td>210</td>
+                        <td>0.2</td>
+                        <td>1.4</td>
+                        <td>120</td>
+                        <td>30</td>
+                        <td>15</td>
+                        <td>5.5</td>
+                        <td>150</td>
+                        <td>300</td>
+                        <td>1.5</td>
+                        <td>10.0</td>
+                        <td>10.5</td>
+                        <td>0.1</td>
+                        <td>0.9</td>
+                        <td>0.3</td>
+                        <td>0.7</td>
+                        <td>2.0</td>
+                        <td>1.5</td>
+                        <td>3.0</td>
+                        <td>20</td>
+                        <td>25</td>
+                        <td>0.25</td>
+                        <td>35</td>
+                        <td>8.5</td>
+                        <td>5.0</td>
+                        <td>14.0</td>
+                        <td>38.5</td>
+                        <td>4.6</td>
+                        <td>0.45</td>
+                        <td>38.5</td>
+                        <td>4.6</td>
+                        <td>0.45</td>
+                    </tr>
+                    <tr>
+                        <td>2023-08-25</td>
+                        <td>7.4</td>
+                        <td>34.5</td>
+                        <td>59.0</td>
+                        <td>1.0</td>
+                        <td>0.1</td>
+                        <td>1.2</td>
+                        <td>115</td>
+                        <td>28</td>
+                        <td>16</td>
+                        <td>5.0</td>
+                        <td>140</td>
+                        <td>310</td>
+                        <td>1.3</td>
+                        <td>9.5</td>
+                        <td>10.0</td>
+                        <td>0.2</td>
+                        <td>0.8</td>
+                        <td>0.4</td>
+                        <td>0.6</td>
+                        <td>1.8</td>
+                        <td>1.3</td>
+                        <td>2.8</td>
+                        <td>18</td>
+                        <td>22</td>
+                        <td>0.23</td>
+                        <td>33</td>
+                        <td>8.2</td>
+                        <td>4.8</td>
+                        <td>13.5</td>
+                        <td>37.2</td>
+                        <td>4.7</td>
+                        <td>0.44</td>
+                        <td>38.5</td>
+                        <td>4.6</td>
+                        <td>0.45</td>
+                    </tr>
+                    <tr>
+                        <td>2023-08-18</td>
+                        <td class="abnormal">15.1↑</td>
+                        <td>3.9</td>
+                        <td>142</td>
+                        <td class="abnormal">80↓</td>
+                        <td>0.1</td>
+                        <td>1.2</td>
+                        <td>115</td>
+                        <td>28</td>
+                        <td>16</td>
+                        <td>5.0</td>
+                        <td>140</td>
+                        <td>310</td>
+                        <td>1.3</td>
+                        <td>9.5</td>
+                        <td>10.0</td>
+                        <td>0.2</td>
+                        <td>0.8</td>
+                        <td>0.4</td>
+                        <td>0.6</td>
+                        <td>1.8</td>
+                        <td>1.3</td>
+                        <td>2.8</td>
+                        <td>18</td>
+                        <td>22</td>
+                        <td>0.23</td>
+                        <td>33</td>
+                        <td>8.2</td>
+                        <td>4.8</td>
+                        <td>13.5</td>
+                        <td>37.2</td>
+                        <td>4.7</td>
+                        <td>0.44</td>
+                        <td>38.5</td>
+                        <td>4.6</td>
+                        <td>0.45</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 
