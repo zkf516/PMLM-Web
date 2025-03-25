@@ -20,7 +20,7 @@ body {
 }
 
 .input-group input {
-    width: 100%;
+    width: 80%;
     padding: 12px 40px;
     background: rgba(74, 101, 114, 0.3);
     border: 1px solid var(--secondary);
@@ -52,11 +52,11 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(45deg, #0d1520, #1a2635);
+    background: linear-gradient(45deg, #0d1520, #001835);
 }
 
 .login-card {
-    background: rgba(20, 35, 51, 0.9);
+    background: rgba(26, 35, 51, 0.9);
     padding: 2rem;
     border-radius: 15px;
     width: 400px;
@@ -77,3 +77,39 @@ body {
 .login-btn:hover {
     box-shadow: 0 0 15px rgba(74, 101, 114, 0.5);
 }
+
+.vital-signs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 3 组一行 */
+    gap: 10px;
+    /* 组与组之间的间距（大） */
+}
+
+
+.data-group {
+    display: flex;
+        flex-direction: ;
+        /* 让组内段落垂直排列 */
+        gap: 50px;
+        /* 组内段落的间距（小） */
+}
+
+.infomation {
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+}
+
+.dashborad-btn {
+    background: rgba(26, 35, 51, 0.9);
+    color: white;
+    padding: 2rem;
+    margin: 10px 0px;
+    border-radius: 15px;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(0, 255, 224, 0.1);
+    transition: all 0.3s;
+}
+

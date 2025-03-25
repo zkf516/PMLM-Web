@@ -15,13 +15,14 @@
             <h2 style="text-align: center; color: var(--accent)">医疗系统登录</h2>
             <div class="input-group">
                 <i class="fas fa-user"></i>
-                <input type="text" placeholder="请输入姓名">
+                <input type="text" id="username" placeholder="请输入姓名">
             </div>
             <div class="input-group">
                 <i class="fas fa-hospital"></i>
-                <input type="text" placeholder="请输入住院号">
+                <input type="text" id="hospitalId" placeholder="请输入住院号">
             </div>
-            <button class="login-btn">登 录</button>
+            <button class="login-btn" onclick="login()">登 录</button>
+            <script src="script.js"></script>
         </div>
     </div>
 </body>
