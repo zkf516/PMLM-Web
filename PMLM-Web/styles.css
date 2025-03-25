@@ -89,10 +89,8 @@ body {
 
 .data-group {
     display: flex;
-        flex-direction: ;
-        /* 让组内段落垂直排列 */
-        gap: 50px;
-        /* 组内段落的间距（小） */
+    gap: 50px;
+    /* 组内段落的间距（小） */
 }
 
 .infomation {
@@ -112,4 +110,3 @@ body {
     box-shadow: 0 0 30px rgba(0, 255, 224, 0.1);
     transition: all 0.3s;
 }
-

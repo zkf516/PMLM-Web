@@ -42,6 +42,7 @@
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid var(--secondary);
+            white-space: nowrap;
         }
 
         .data-table th {
@@ -74,6 +75,40 @@
             opacity: 0.9;
         }
     </style>
+    <script>
+        function formatValue(value, min, max) {
+            if (value < min) {
+                return `<span class='abnormal'>${value}↓</span>`;
+            } else if (value > max) {
+                return `<span class='abnormal'>${value}↑</span>`;
+            }
+            return value;
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch('/api/data'); // 需后端提供 /api/data 端点
+                const data = await response.json();
+                const tbody = document.querySelector(".data-table tbody");
+                tbody.innerHTML = "";
+
+                data.forEach(item => {
+                    const row = `<tr>
+                        <td>${item.日期}</td>
+                        <td>${formatValue(item["白细胞计数"], 4.0, 10.0)}</td>
+                        <td>${formatValue(item["红细胞计数"], 3.5, 5.5)}</td>
+                        <td>${formatValue(item["血红蛋白"], 120, 160)}</td>
+                        <td>${formatValue(item["血小板总数"], 150, 400)}</td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error("数据加载失败:", error);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadData);
+    </script>
 </head>
 
 <body>
@@ -99,27 +134,6 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>2023-09-01</td>
-                    <td class="abnormal">12.5↑</td>
-                    <td>4.2</td>
-                    <td class="abnormal">135↓</td>
-                    <td>210</td>
-                </tr>
-                <tr>
-                    <td>2023-08-25</td>
-                    <td>8.2</td>
-                    <td>4.5</td>
-                    <td>145</td>
-                    <td>195</td>
-                </tr>
-                <tr>
-                    <td>2023-08-18</td>
-                    <td class="abnormal">15.1↑</td>
-                    <td>3.9</td>
-                    <td>142</td>
-                    <td class="abnormal">80↓</td>
-                </tr>
             </tbody>
         </table>
     </div>

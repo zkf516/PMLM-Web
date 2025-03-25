@@ -4,6 +4,8 @@ const validUsers = [
     { username: "李四", hospitalId: "654321" },
 ];
 
+
+// 登录
 function login() {
     const username = document.getElementById("username").value.trim();
     const hospitalId = document.getElementById("hospitalId").value.trim();
@@ -20,10 +22,12 @@ function login() {
     }
 }
 
+// 医疗咨询
 function chat() {
     window.location.href = "chat.html";
 }
 
+// 血压记录
 function records() {
     window.location.href = "records.html";
 }
