@@ -22,6 +22,11 @@ function login() {
     }
 }
 
+// 基本信息
+function dashboard() {
+    window.location.href = "dashboard.html";
+}
+
 // 医疗咨询
 function chat() {
     window.location.href = "chat.html";

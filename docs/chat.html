@@ -5,11 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>医疗建议</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <style>
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--primary);
+            padding: 1rem;
+            border-right: 1px solid var(--secondary);
+        }
+
+        .patient-info {
+            background: rgba(74, 101, 114, 0.15);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
         .chat-wrapper {
-            max-width: 1000px;
+            max-width: 50vw;
+            /* 设置最大宽度为屏幕的 40% */
+            width: 50vw;
+            /* 设置宽度为屏幕的 40% */
             margin: 2rem auto;
             padding: 0 1rem;
         }
@@ -73,7 +94,7 @@
             border-radius: 8px;
             color: var(--text);
             resize: none;
-            height: 45px;
+            height: 30px;
             max-height: 120px;
         }
 
@@ -106,63 +127,98 @@
 </head>
 
 <body>
-    <div class="chat-wrapper">
-        <div class="chat-header">
-            <h1>AI医疗助手</h1>
-            <p>基于患者病历数据的智能分析建议</p>
-        </div>
-
-        <div class="chat-history" id="chatHistory">
-            <div class="message ai-message">
-                <strong>系统提示：</strong> 您好！我是医疗AI助手，可以为您解答以下问题：<br>
-                • 检查报告解读<br>
-                • 用药建议咨询<br>
-                • 症状原因分析<br>
-                • 康复指导建议
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="patient-info">
+                <h2>陈书航</h2>
+                <p>身份证号：000000000000</p>
+                <p>住院号：20240315</p>
+                <p>CARDNO：100000</p>
+                <p>性别：男</p>
+                <p>年龄：22</p>
+                <p>身高：100cm</p>
+                <p>是否住院：是</p>
             </div>
+            <nav>
+                <button class="dashborad-btn" onclick="dashboard()">基本信息</button>
+                <button class="dashborad-btn" onclick="records()">病历数据</button>
+                <button class="dashborad-btn" onclick="chat()">医疗建议</button>
+                <script src="script.js"></script>
+            </nav>
         </div>
 
-        <div class="chat-input">
-            <textarea id="userInput" placeholder="输入您的医疗问题（支持换行输入）"></textarea>
-            <button class="send-btn" onclick="sendMessage()">发送</button>
+        <div class="chat-wrapper">
+            <div class="chat-header">
+                <h1>AI医疗助手</h1>
+                <p>基于患者病历数据的智能分析建议</p>
+            </div>
+
+            <div class="chat-history" id="chatHistory"></div>
+
+            <div class="chat-input">
+                <textarea id="userInput" placeholder="输入您的医疗问题"></textarea>
+                <button class="send-btn" onclick="sendMessage()">发送</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function sendMessage() {
+        const API_KEY = "sk-933cdfbb82af41f0aae2e61abbd98062";  // 替换成你的 API Key
+
+        function adjustChatHeight() {
+            const chatHistory = document.getElementById("chatHistory");
+            chatHistory.style.height = "auto"; // 先设为 auto，让其根据内容撑开
+            chatHistory.style.maxHeight = window.innerHeight * 0.8 + "px"; // 限制最大高度，防止无限增长
+        }
+
+        async function sendMessage() {
             const userInput = document.getElementById("userInput");
             const chatHistory = document.getElementById("chatHistory");
             const messageText = userInput.value.trim();
             if (messageText === "") return;
 
-            // 创建用户消息
+            // 添加用户消息
             const userMessage = document.createElement("div");
             userMessage.classList.add("message", "user-message");
             userMessage.textContent = messageText;
             chatHistory.appendChild(userMessage);
 
-            // 清空输入框
             userInput.value = "";
 
-            // 预留 AI 接口调用位置
-            setTimeout(() => {
-                const aiMessage = document.createElement("div");
-                aiMessage.classList.add("message", "ai-message");
-                aiMessage.innerHTML = `<strong>AI回复：</strong> （此处预留接口调用，可替换为实际 AI 处理结果）`;
-                chatHistory.appendChild(aiMessage);
-                
-                // 滚动到底部
-                chatHistory.scrollTop = chatHistory.scrollHeight;
-            }, 1000);
-        }
+            // AI 思考中的消息
+            const aiMessage = document.createElement("div");
+            aiMessage.classList.add("message", "ai-message");
+            aiMessage.innerHTML = `<strong>AI助手：</strong> 正在分析，请稍候...`;
+            chatHistory.appendChild(aiMessage);
 
-        // 监听回车键发送消息
-        document.getElementById("userInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
+            // **调整聊天区域高度**
+            adjustChatHeight();
+
+            try {
+                const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [{ role: "user", content: messageText }]
+                    })
+                });
+
+                const data = await response.json();
+                aiMessage.innerHTML = `<strong>AI助手：</strong> ${data.choices[0].message.content}`;
+            } catch (error) {
+                aiMessage.innerHTML = `<strong>AI助手：</strong> 出现错误，请稍后再试。`;
+                console.error("Error:", error);
             }
-        });
+
+            // **再次调整高度**
+            adjustChatHeight();
+
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
     </script>
 </body>
 
