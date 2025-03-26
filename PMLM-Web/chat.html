@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医疗建议</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary: #2F4353;
+            --secondary: #4A6572;
+            --text: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #1A2333;
+            color: var(--text);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--primary);
+            padding: 1rem;
+            border-right: 1px solid var(--secondary);
+        }
+
+        .patient-info {
+            background: rgba(74, 101, 114, 0.15);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: rgba(74, 101, 114, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 8px 0;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .info-card:hover {
+            background: rgba(74, 101, 114, 0.5);
+        }
+
+        .chat-wrapper {
+            max-width: 40vw; /* 设置最大宽度为屏幕的 40% */
+            width: 40vw;     /* 设置宽度为屏幕的 40% */
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .chat-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--secondary);
+            padding-bottom: 1rem;
+        }
+
+        .chat-history {
+            height: 60vh;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(26, 35, 51, 0.9);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .message {
+            margin: 1.5rem 0;
+            padding: 1.2rem;
+            border-radius: 15px;
+            max-width: 75%;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #4A6572, #2F4353);
+            margin-left: auto;
+            border: 1px solid rgba(74, 101, 114, 0.5);
+        }
+
+        .ai-message {
+            background: rgba(26, 35, 51, 0.8);
+            border: 1px solid var(--secondary);
+            position: relative;
+        }
+
+        .ai-message::before {
+            content: "🩺";
+            position: absolute;
+            left: -35px;
+            top: 10px;
+            font-size: 1.2rem;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+            background: rgba(26, 35, 51, 0.9);
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            padding: 12px;
+            background: rgba(74, 101, 114, 0.3);
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            color: var(--text);
+            resize: none;
+            height: 45px;
+            max-height: 120px;
+        }
+
+        .send-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 0 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .send-btn:hover {
+            opacity: 0.9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="patient-info">
+                <h2>陈书航</h2>
+                <p>住院号：20240315</p>
+                <p>性别：男</p>
+                <p>年龄：1</p>
+            </div>
+            <nav>
+                <div class="info-card">基本信息</div>
+                <div class="info-card">病历数据</div>
+                <div class="info-card">医疗建议</div>
+            </nav>
+        </div>
+
+        <div class="chat-wrapper">
+            <div class="chat-header">
+                <h1>AI医疗助手</h1>
+                <p>基于患者病历数据的智能分析建议</p>
+            </div>
+
+            <div class="chat-history" id="chatHistory"></div>
+
+            <div class="chat-input">
+                <textarea id="userInput" placeholder="输入您的医疗问题"></textarea>
+                <button class="send-btn" onclick="sendMessage()">发送</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = "sk-933cdfbb82af41f0aae2e61abbd98062";  // 替换成你的 API Key
+
+        function adjustChatHeight() {
+        const chatHistory = document.getElementById("chatHistory");
+        chatHistory.style.height = "auto"; // 先设为 auto，让其根据内容撑开
+        chatHistory.style.maxHeight = window.innerHeight * 0.8 + "px"; // 限制最大高度，防止无限增长
+        }
+
+        async function sendMessage() {
+        const userInput = document.getElementById("userInput");
+        const chatHistory = document.getElementById("chatHistory");
+        const messageText = userInput.value.trim();
+        if (messageText === "") return;
+
+        // 添加用户消息
+        const userMessage = document.createElement("div");
+        userMessage.classList.add("message", "user-message");
+        userMessage.textContent = messageText;
+        chatHistory.appendChild(userMessage);
+
+        userInput.value = "";
+
+        // AI 思考中的消息
+        const aiMessage = document.createElement("div");
+        aiMessage.classList.add("message", "ai-message");
+        aiMessage.innerHTML = `<strong>AI助手：</strong> 正在分析，请稍候...`;
+        chatHistory.appendChild(aiMessage);
+
+        // **调整聊天区域高度**
+        adjustChatHeight();
+
+        try {
+            const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${API_KEY}`
+               },
+                body: JSON.stringify({
+                    model: "deepseek-chat",
+                    messages: [{ role: "user", content: messageText }]
+                })
+            });
+
+            const data = await response.json();
+            aiMessage.innerHTML = `<strong>AI助手：</strong> ${data.choices[0].message.content}`;
+        } catch (error) {
+            aiMessage.innerHTML = `<strong>AI助手：</strong> 出现错误，请稍后再试。`;
+            console.error("Error:", error);
+        }
+
+        // **再次调整高度**
+        adjustChatHeight();
+
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+    </script>
+</body>
+
+</html>
