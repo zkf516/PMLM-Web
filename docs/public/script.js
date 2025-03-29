@@ -16,7 +16,7 @@ function login() {
     if (user) {
         alert("登录成功！");
         localStorage.setItem("loggedInUser", JSON.stringify(user)); // 保存到本地存储
-        window.location.href = "dashboard.html"; // 跳转到用户主页
+        window.location.href = "public/dashboard.html"; // 跳转到用户主页
     } else {
         alert("用户名或住院号错误，请重试！");
     }
