@@ -31,8 +31,11 @@
             /* 设置最大宽度为屏幕的 40% */
             width: 50vw;
             /* 设置宽度为屏幕的 40% */
-            margin: 2rem auto;
+            margin: 1rem auto;
             padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            height: 95vh;
         }
 
         .chat-header {
@@ -48,6 +51,7 @@
             background: rgba(26, 35, 51, 0.9);
             border-radius: 15px;
             margin-bottom: 1rem;
+            white-space: pre-line;
         }
 
         .message {
@@ -130,19 +134,20 @@
     <div class="dashboard">
         <div class="sidebar">
             <div class="patient-info">
-                <h2>陈书航</h2>
-                <p>身份证号：000000000000</p>
-                <p>住院号：20240315</p>
-                <p>CARDNO：100000</p>
-                <p>性别：男</p>
-                <p>年龄：22</p>
-                <p>身高：100cm</p>
-                <p>是否住院：是</p>
+                <h2>---</h2>
+                <p>身份证号：</p>
+                <p>住院号：</p>
+                <p>CARDNO：</p>
+                <p>性别：</p>
+                <p>年龄：</p>
+                <p>身高：</p>
+                <p>是否住院：</p>
             </div>
             <nav>
                 <button class="dashborad-btn" onclick="dashboard()">基本信息</button>
                 <button class="dashborad-btn" onclick="records()">病历数据</button>
                 <button class="dashborad-btn" onclick="chat()">医疗建议</button>
+                <button class="dashborad-btn" onclick="nextpage()">下一页</button>
                 <script src="script.js"></script>
             </nav>
         </div>
@@ -167,8 +172,8 @@
 
         function adjustChatHeight() {
             const chatHistory = document.getElementById("chatHistory");
-            chatHistory.style.height = "auto"; // 先设为 auto，让其根据内容撑开
-            chatHistory.style.maxHeight = window.innerHeight * 0.8 + "px"; // 限制最大高度，防止无限增长
+            //chatHistory.style.height = "auto"; // 先设为 auto，让其根据内容撑开***
+            chatHistory.style.maxHeight = window.innerHeight * 0.6 + "px"; // 限制最大高度，防止无限增长***
         }
 
         async function sendMessage() {
@@ -188,7 +193,7 @@
             // AI 思考中的消息
             const aiMessage = document.createElement("div");
             aiMessage.classList.add("message", "ai-message");
-            aiMessage.innerHTML = `<strong>AI助手：</strong> 正在分析，请稍候...`;
+            aiMessage.innerHTML = `<strong>AI医疗助手：</strong> 正在分析，请稍候...`;
             chatHistory.appendChild(aiMessage);
 
             // **调整聊天区域高度**
@@ -208,9 +213,9 @@
                 });
 
                 const data = await response.json();
-                aiMessage.innerHTML = `<strong>AI助手：</strong> ${data.choices[0].message.content}`;
+                aiMessage.innerHTML = `<strong>AI医疗助手：</strong>\n ${data.choices[0].message.content}`;
             } catch (error) {
-                aiMessage.innerHTML = `<strong>AI助手：</strong> 出现错误，请稍后再试。`;
+                aiMessage.innerHTML = `<strong>AI医疗助手：</strong> 出现错误，请稍后再试。`;
                 console.error("Error:", error);
             }
 
